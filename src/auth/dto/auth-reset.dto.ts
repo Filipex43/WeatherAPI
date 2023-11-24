@@ -9,7 +9,7 @@ export class AuthResetDTO {
         minUppercase: 0,
         minLowercase: 0
     })
-    senha: string;
+    password: string;
 
     @IsJWT()
     token: string

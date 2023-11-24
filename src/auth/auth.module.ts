@@ -1,21 +1,3 @@
-// // auth.module.ts
-// import { Module } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-// import { LocalStrategy } from './local.strategy';
-// import { JwtModule } from '@nestjs/jwt';
-// import { UserService } from '../user/user.service';
-// @Module({
-//   imports: [
-//     JwtModule.register({
-//       secret: 'your-secret-key',
-//       signOptions: { expiresIn: '1h' },
-//     }),
-//   ],
-//   providers: [AuthService, LocalStrategy, UserService],
-//   exports: [AuthService],
-// })
-// export class AuthModule {}
-
 import { Module, forwardRef } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
@@ -23,19 +5,21 @@ import { UserModule } from "../user/user.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../user/entities/user.entity";
 import { AuthService } from "./auth.service";
+import { UserService } from "src/user/user.service";
+import { JwtStrategy } from './jwt.strategy';
+import { PassportModule } from "@nestjs/passport";
 
 @Module({
     imports: [
         JwtModule.register({
-            secret: String(process.env.JWT_SECRET)
+            secret: 'cded48d06f96c5b5b68c61796c2d1c8b42373fbf8dab9fa9beffb172df1a004d',
         }),
         forwardRef(() => UserModule),
+        PassportModule.register({ defaultStrategy: 'jwt' }),
         TypeOrmModule.forFeature([User])
     ],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, UserService, JwtStrategy],
     exports: [AuthService]
 })
-export class AuthModule {
-
-}
+export class AuthModule {}

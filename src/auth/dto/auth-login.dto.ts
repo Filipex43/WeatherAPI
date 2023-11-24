@@ -13,5 +13,5 @@ export class AuthLoginDTO {
         minUppercase: 0,
         minLowercase: 0
     })
-    senha: string;
+    password: string;
 }

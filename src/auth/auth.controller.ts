@@ -1,18 +1,3 @@
-// // auth.controller.ts
-// import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-// import { LocalAuthGuard } from './local-auth.guard'; // You'll need to create this guard
-
-// @Controller('auth')
-// export class AuthController {
-//   constructor(private readonly authService: AuthService) {}
-
-//   @UseGuards(LocalAuthGuard)
-//   @Post('login')
-//   async login(@Request() req) {
-//     return this.authService.login(req.user);
-//   }
-// }
 
 import { Body, Controller, Post, UseGuards, Req } from "@nestjs/common";
 import { AuthLoginDTO } from "./dto/auth-login.dto";
@@ -22,7 +7,6 @@ import { AuthResetDTO } from "./dto/auth-reset.dto";
 import { UserService } from "../user/user.service";
 import { AuthService } from "./auth.service";
 import { AuthGuard } from "../guards/auth.guards";
-import { User } from "../user/entities/user.entity";
 
 @Controller('auth')
 export class AuthController {
@@ -33,12 +17,13 @@ export class AuthController {
     ){}
 
     @Post('login')
-    async login(@Body() {email, senha}: AuthLoginDTO){
-        return this.authService.login(email, senha)
+    async login(@Body() { email, password }: AuthLoginDTO) {
+        const token = await this.authService.login(email, password);
+        return { token };
     }
 
     @Post('register')
-    async register(@Body() body: AuthRegisterDTO){
+    async register(@Body() body: AuthRegisterDTO) {
         return this.authService.register(body);
     }
 
@@ -48,8 +33,8 @@ export class AuthController {
     }
 
     @Post('reset')
-    async reset(@Body() {senha, token}: AuthResetDTO){
-        return this.authService.reset(senha, token)
+    async reset(@Body() {password, token}: AuthResetDTO){
+        return this.authService.reset(password, token)
     }
 
     @UseGuards(AuthGuard)
