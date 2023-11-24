@@ -6,7 +6,7 @@ import { AuthForgetDTO } from "./dto/auth-forget.dto";
 import { AuthResetDTO } from "./dto/auth-reset.dto";
 import { UserService } from "../user/user.service";
 import { AuthService } from "./auth.service";
-import { AuthGuard } from "../guards/auth.guards";
+import { AuthGuard } from "./auth.guard";
 
 @Controller('auth')
 export class AuthController {
